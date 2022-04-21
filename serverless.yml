@@ -1,0 +1,90 @@
+service: sls-booking-system
+
+plugins:
+  - serverless-pseudo-parameters
+
+provider:
+  name: aws
+  runtime: dotnetcore3.1
+  stage: ${opt:stage, 'stage'}
+  region: eu-west-2
+  timeout: 30
+  memorySize: 512
+  logRetentionInDays: 14
+  versionFunctions: false
+  profile: sandbox
+  feature: booking-system
+  stackTags:
+    FEATURE: ${self:provider.feature}
+    ENVIRONMENT: ${self:provider.stage}
+  tags:
+    FEATURE: ${self:provider.feature}
+    ENVIRONMENT: ${self:provider.stage}
+    VERSION: ${env:VERSION}
+  environment:
+    ENVIRONMENT: ${self:provider.stage}
+    VERSION: ${env:VERSION}
+    DEPLOYED_DATE: ${env:DEPLOYED_DATE}
+    TABLE_NAME: ${self:custom.tableName}
+    BOOKING_CREATED_TOPIC: !Ref BookingCreatedTopic
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+      Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:custom.tableName}
+    - Effect: Allow
+      Action:
+        - sns:Publish
+      Resource: !Ref BookingCreatedTopic
+
+package:
+  artifact: package.zip
+
+functions:
+  create:
+    handler: booking-system::LambdaHandlers::createBooking
+    events:
+      - http:
+          method: post
+          path: create
+  list:
+    handler: booking-system::LambdaHandlers::listBookings
+    events:
+      - http:
+          method: post
+          path: list
+#  bookingCreatedNotification:
+#    handler: booking-system::LambdaHandlers::bookingCreatedNotification
+#    events:
+#      - sns:
+#          arn: !Ref BookingCreatedTopic
+
+custom:
+  tableName: bookings-table
+  topics:
+    bookingCreated: booking-created
+
+resources:
+  Resources:
+    BookingsTable:
+      Type: AWS::DynamoDB::Table
+      Properties: 
+        TableName: ${self:custom.tableName}
+        AttributeDefinitions:
+          - AttributeName: CustomerId
+            AttributeType: S
+          - AttributeName: Id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: CustomerId
+            KeyType: HASH
+          - AttributeName: Id
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+    BookingCreatedTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: ${self:custom.topics.bookingCreated}
+        

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <NoWarn>FS0988</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="TypeExtensions.fs" />
+    <Compile Include="DomainTypes.fs" />
+    <Compile Include="Aws.fs" />
+    <Compile Include="DataAccess.fs" />
+    <Compile Include="Workflows.fs" />
+    <Compile Include="LambdaHandlers.fs" />
+  </ItemGroup>
+  <Import Project="..\.paket\Paket.Restore.targets" />
+</Project>

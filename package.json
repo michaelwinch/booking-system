@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "devDependencies": {
+    "@totallymoney/github-serverless-dotnet-artifacts": "^3.0.0",
+    "serverless": "^3.14.0",
+    "serverless-pseudo-parameters": "^2.6.1"
+  },
+  "scripts": {
+    "preinstall": "dotnet tool restore && dotnet paket restore",
+    "build": "dotnet build src",
+    "test": "dotnet run -p tests",
+    "publish": "gsda-publish mediaingenuity/booking-system src",
+    "deploy": "gsda-deploy mediaingenuity/booking-system",
+    "pick": "gsda-pick -e stage -e prod"
+  }
+}

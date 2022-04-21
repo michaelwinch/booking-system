@@ -1,0 +1,19 @@
+framework auto-detect
+source https://api.nuget.org/v3/index.json
+nuget FSharp.Core
+nuget FSharp.Data
+nuget Amazon.Lambda.APIGatewayEvents
+nuget Amazon.Lambda.Core
+nuget Amazon.Lambda.Serialization.SystemTextJson
+nuget Amazon.Lambda.SNSEvents
+nuget Amazon.Lambda.SQSEvents
+nuget AWSSDK.SimpleNotificationService
+nuget AWSSDK.SQS
+nuget Newtonsoft.Json
+nuget AWSSDK.DynamoDBv2
+
+group Tests
+  framework auto-detect
+  source https://api.nuget.org/v3/index.json
+  nuget FSharp.Core
+  nuget Expecto

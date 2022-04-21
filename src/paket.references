@@ -1,0 +1,11 @@
+FSharp.Core
+FSharp.Data
+Amazon.Lambda.APIGatewayEvents
+Amazon.Lambda.Core
+Amazon.Lambda.Serialization.SystemTextJson
+Amazon.Lambda.SNSEvents
+Amazon.Lambda.SQSEvents
+AWSSDK.SimpleNotificationService
+AWSSDK.SQS
+Newtonsoft.Json
+AWSSDK.DynamoDBv2
